@@ -1,0 +1,10 @@
+.env
+.env.*
+node_modules/
+vendor/
+.git/
+.gitignore
+storage/logs/*.log
+bootstrap/cache/*.php
+database/database.sqlite
+*.md
