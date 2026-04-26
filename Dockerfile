@@ -32,10 +32,12 @@ RUN mkdir -p storage/framework/{sessions,views,cache,testing} \
     && chmod -R 775 storage bootstrap/cache \
     && touch database/database.sqlite
 
-RUN composer run-script post-autoload-dump 2>/dev/null || true
 
 EXPOSE 8000
 
 CMD touch database/database.sqlite \
+    && php artisan config:clear \
+    && php artisan route:clear \
+    && php artisan view:clear \
     && php artisan migrate --force \
     && php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
