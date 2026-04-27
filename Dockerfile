@@ -16,6 +16,13 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
 
+# Variables de entorno para producción
+ENV APP_ENV=production
+ENV APP_DEBUG=false
+ENV APP_URL=https://huella-social.onrender.com
+ENV DB_CONNECTION=sqlite
+ENV DB_DATABASE=/app/database/database.sqlite
+
 # Dependencias PHP
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction
@@ -32,12 +39,14 @@ RUN mkdir -p storage/framework/{sessions,views,cache,testing} \
     && chmod -R 775 storage bootstrap/cache \
     && touch database/database.sqlite
 
-
 EXPOSE 8000
 
-CMD export APP_URL="${RENDER_EXTERNAL_URL:-${APP_URL:-http://localhost:8000}}" \
-    && touch database/database.sqlite \
+CMD touch database/database.sqlite \
     && php artisan config:clear \
+    && php artisan route:clear \
+    && php artisan view:clear \
+    && php artisan migrate --force \
+    && php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
     && php artisan route:clear \
     && php artisan view:clear \
     && php artisan migrate --force \
