@@ -35,7 +35,8 @@ RUN mkdir -p storage/framework/{sessions,views,cache,testing} \
 
 EXPOSE 8000
 
-CMD touch database/database.sqlite \
+CMD export APP_URL="${RENDER_EXTERNAL_URL:-${APP_URL:-http://localhost:8000}}" \
+    && touch database/database.sqlite \
     && php artisan config:clear \
     && php artisan route:clear \
     && php artisan view:clear \
