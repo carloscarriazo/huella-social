@@ -47,7 +47,3 @@ CMD touch database/database.sqlite \
     && php artisan view:clear \
     && php artisan migrate --force \
     && php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
-    && php artisan route:clear \
-    && php artisan view:clear \
-    && php artisan migrate --force \
-    && php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
